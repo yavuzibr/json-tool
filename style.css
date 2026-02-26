@@ -404,3 +404,184 @@ ul { list-style: none; }
 /* ── LOADING ─────────────────────────────────── */
 @keyframes pulse { 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
 .is-loading .run-btn__text { animation: pulse 1s ease infinite; }
+
+/* ═══════════════════════════════════════════════
+   ANALİZ SONUÇ BİLEŞENLERİ
+═══════════════════════════════════════════════ */
+
+.result-card--warn { border-color: #ff4d4d44; }
+.result-card__value--warn { color: var(--danger); }
+
+.analysis-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── ACCORDION ───────────────────────────────── */
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-panel);
+}
+
+.accordion__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--ease);
+}
+.accordion__header:hover { background: var(--bg-hover); }
+
+.accordion__title {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.accordion__chevron {
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1;
+  transform: rotate(0deg);
+  transition: transform 0.2s ease;
+}
+.accordion.is-open .accordion__chevron { transform: rotate(90deg); }
+
+.accordion__body {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+.accordion.is-open .accordion__body { display: block; }
+
+/* ── TYPE DAĞILIMI ───────────────────────────── */
+.type-list { padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+
+.type-row {
+  display: grid;
+  grid-template-columns: 70px 1fr 40px 38px;
+  align-items: center;
+  gap: 10px;
+}
+.type-row__name  { font-size: 11px; color: var(--text-muted); }
+.type-row__bar-wrap { height: 6px; background: var(--bg-active); border-radius: 3px; overflow: hidden; }
+.type-row__bar   { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+.type-row__count { font-size: 11px; color: var(--text); text-align: right; }
+.type-row__pct   { font-size: 10px; color: var(--text-muted); text-align: right; }
+
+/* ── SCHEMA ALANLARI ─────────────────────────── */
+.field-tags { padding: 14px 16px; display: flex; flex-wrap: wrap; gap: 6px; }
+
+.field-tag {
+  padding: 3px 10px;
+  border: 1px solid var(--border-mid);
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--info);
+  background: var(--bg-active);
+  transition: border-color var(--ease);
+}
+.field-tag:hover { border-color: var(--info); }
+
+/* ── NULL / MISSING ──────────────────────────── */
+.issue-list { padding: 10px 16px; display: flex; flex-direction: column; gap: 6px; }
+
+.issue-row { display: flex; align-items: center; gap: 10px; padding: 4px 0; }
+
+.issue-row__badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.issue-row__badge--null    { background: #ff4d4d22; color: var(--danger); border: 1px solid #ff4d4d44; }
+.issue-row__badge--missing { background: #fbbf2422; color: #fbbf24;      border: 1px solid #fbbf2444; }
+.issue-row__path { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* ── HİYERARŞİ AĞACI ─────────────────────────── */
+.tree-list { padding: 10px 16px; display: flex; flex-direction: column; gap: 2px; max-height: 320px; overflow-y: auto; }
+
+.tree-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  border-radius: var(--radius);
+}
+.tree-row:hover { background: var(--bg-hover); }
+.tree-row__icon { font-size: 12px; flex-shrink: 0; }
+.tree-row__path { font-size: 11px; color: var(--text); flex: 1; font-family: var(--font-mono); }
+.tree-row__type {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--bg-active);
+  padding: 1px 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+/* ── PASTA GRAFİĞİ ───────────────────────────── */
+.pie-wrap {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 20px;
+}
+
+.pie-chart {
+  width: 160px;
+  height: 160px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.pie-slice:hover { opacity: 0.75 !important; }
+
+.pie-center-label {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  fill: var(--text);
+}
+.pie-center-sub {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  fill: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── LEGEND ──────────────────────────────────── */
+.legend {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.legend-row {
+  display: grid;
+  grid-template-columns: 10px 1fr 36px 36px;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.legend-name  { font-size: 11px; color: var(--text); }
+.legend-count { font-size: 11px; color: var(--text-muted); text-align: right; }
+.legend-pct   { font-size: 10px; color: var(--text-muted); text-align: right; }
