@@ -1,14 +1,6 @@
 # { JSON Tool }
 
 <p align="center">
-  <img src="https://img.shields.io/github/license/kullanici/json-tool?style=flat-square&color=42b883" alt="License">
-  <img src="https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python" alt="Python Version">
-  <img src="https://img.shields.io/badge/backend-Flask-lightgrey?style=flat-square&logo=flask" alt="Backend">
-  <img src="https://img.shields.io/badge/frontend-VanillaJS-yellow?style=flat-square&logo=javascript" alt="Frontend">
-</p>
-
-
-<p align="center">
   <img src="./assets/cover.png" width="100%" alt="JSON Tool Cover">
 </p>
 
@@ -27,11 +19,6 @@
 * **Merge:** Birden fazla JSON dosyasını tek dosyada birleştirir.
 * **Trim:** Büyük veri setlerini hız için optimize eder (ilk 100 obje).
 * **Dedupe:** Tekrar eden (duplicate) objeleri akıllıca temizler.
-
-### 🎨 Kullanıcı Deneyimi
-* **Dark / Light Mode:** Modern ve göz yormayan arayüz seçenekleri.
-* **Hızlı Aksiyonlar:** Tek tıkla kopyalama ve JSON olarak indirme.
-* **Modern Tipografi:** *Syne* ve *DM Mono* fontları ile yüksek okunabilirlik.
 
 ---
 
