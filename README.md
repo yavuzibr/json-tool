@@ -1,38 +1,24 @@
 # { JSON Tool }
 
-> Analyze. Transform. Export.
-
-JSON dosyalarını analiz etmek, dönüştürmek ve dışa aktarmak için geliştirilmiş minimal bir developer aracı.
-Flask tabanlı backend, sade ve hızlı bir frontend.
-
 <p align="center">
-  <img src="./assets/cover.png" width="100%">
+  <img src="./assets/cover.png" width="100%" alt="JSON Tool Cover">
 </p>
 
 ---
 
-## ✦ Özellikler
+## ✦ Öne Çıkan Özellikler
 
-**Analiz**
+### 📊 Derinlemesine Analiz
+* **Şema Tespiti:** Farklı obje yapılarını otomatik olarak gruplandırır.
+* **Tip Dağılımı:** Veri tiplerini interaktif pasta grafikleriyle görselleştirir.
+* **Veri İstatistikleri:** String kelime sayısı, integer frekansı, array uzunlukları.
+* **Eksik Veri Takibi:** `Null` veya `Missing` alanları anında listeler.
+* **Görsel Hiyerarşi:** JSON yapısını ağaç (tree) ve iskelet (map) görünümünde sunar.
 
-* Şema tespiti — farklı obje yapılarını otomatik gruplar
-* Type dağılımı — interaktif pasta grafiği ile görselleştirme
-* Type istatistikleri — string kelime sayısı, integer frekansı, boolean oranı, array uzunluğu
-* Null / Missing alan tespiti — eksik veya boş alanları listeler
-* Hiyerarşi görünümü — iç içe yapıyı ağaç olarak gösterir
-* Yapı haritası — JSON'un iskeletini çıkarır
-
-**İşlemler**
-
-* **Merge** — birden fazla JSON dosyasını tek dosyada birleştirir
-* **Trim** — ilk 100 objeyi alır, kalanı atar
-* **Dedupe** — tekrar eden objeleri temizler
-
-**Arayüz**
-
-* Dark / Light tema desteği
-* Kopyala ve JSON olarak indirme
-* Çoklu dosya ve klasör yükleme
+### 🛠 Veri İşlemleri
+* **Merge:** Birden fazla JSON dosyasını tek dosyada birleştirir.
+* **Trim:** Büyük veri setlerini hız için optimize eder (ilk 100 obje).
+* **Dedupe:** Tekrar eden (duplicate) objeleri akıllıca temizler.
 
 ---
 
@@ -50,80 +36,69 @@ Flask tabanlı backend, sade ve hızlı bir frontend.
 
 ---
 
-## ⚙ Kurulum
+## ⚙ Kurulum ve Başlatma
 
 ### Gereksinimler
-
-* Python 3.8+
-* pip
+* **Python 3.8+**
+* **pip** (Python paket yöneticisi)
 
 ### Adımlar
 
-```bash
-# 1. Repoyu klonla
-git clone https://github.com/kullanici/json-tool.git
-cd json-tool
+1. **Repoyu klonlayın ve dizine gidin:**
+   ```bash
+   git clone [https://github.com/kullanici/json-tool.git](https://github.com/kullanici/json-tool.git)
+   cd json-tool
 
-# 2. Bağımlılıkları yükle
-pip install -r requirements.txt
-
-# 3. Sunucuyu başlat
-cd backend
-python app.py
 ```
 
-Tarayıcıda aç → [http://localhost:5000](http://localhost:5000)
+2. **Gerekli paketleri yükleyin:**
+```bash
+pip install -r requirements.txt
+
+```
+
+
+3. **Backend sunucusunu başlatın:**
+```bash
+cd backend
+python app.py
+
+```
+
+
+4. **Tarayıcıda görüntüleyin:** [http://localhost:5000](https://www.google.com/search?q=http://localhost:5000)
 
 ---
 
 ## 📁 Dosya Yapısı
 
-```
+```text
 json-tool/
-│
 ├── backend/
-│   ├── app.py          # Flask route'ları
-│   └── analyzer.py     # Analiz ve işlem mantığı
-│
+│   ├── app.py           # API Route'ları ve Flask yapılandırması
+│   └── analyzer.py      # Core analiz ve veri işleme mantığı
 ├── frontend/
-│   ├── index.html
-│   ├── css/
-│   │   ├── main.css        # Variables, reset, base
-│   │   ├── layout.css      # Header, paneller, grid
-│   │   └── components.css  # Butonlar, kartlar, grafikler
-│   └── js/
-│       ├── state.js    # Uygulama state'i
-│       ├── api.js      # Backend fetch çağrıları
-│       ├── render.js   # DOM render fonksiyonları
-│       └── main.js     # Event listener'lar, init
-│
-├── assets/
-│   ├── cover.png
-│   ├── schema.png
-│   ├── types.png
-│   ├── tree.png
-│   └── merge.png
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
+│   ├── index.html       # Ana yapı
+│   ├── css/             # Modüler stil dosyaları
+│   └── js/              # ESM tabanlı state yönetimi
+├── assets/              # Uygulama görselleri ve cover.png
+└── requirements.txt     # Python bağımlılık listesi
+
 ```
 
 ---
 
-## 🛠 Kullanılan Teknolojiler
+## 🛠 API Referansı
 
-| Katman   | Teknoloji        |
-| -------- | ---------------- |
-| Backend  | Python, Flask    |
-| Frontend | Vanilla JS (ESM) |
-| Stil     | CSS Variables    |
-| Fontlar  | Syne, DM Mono    |
+| Endpoint | Method | Açıklama |
+| --- | --- | --- |
+| `/api/analyze` | `POST` | JSON analiz istatistiklerini döner. |
+| `/api/merge` | `POST` | Yüklenen dosyaları birleştirir. |
+| `/api/transform` | `POST` | Trim ve Dedupe işlemlerini uygular. |
 
 ---
 
 ## 📄 Lisans
 
-MIT
+Bu proje **MIT Lisansı** altında lisanslanmıştır.
 
----
