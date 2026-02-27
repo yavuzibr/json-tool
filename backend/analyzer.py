@@ -1,110 +1,10 @@
 # ═══════════════════════════════════════════════
-#  JSON TOOL — app.py
-#  Flask backend: analiz + işlemler API
-#
-#  Kurulum:  pip install flask
-#  Çalıştır: python app.py
-#  Adres:    http://localhost:5000
+#  JSON TOOL — analyzer.py
+#  Tüm analiz ve yardımcı fonksiyonlar
 # ═══════════════════════════════════════════════
 
-from flask import Flask, request, jsonify, send_from_directory
-from collections import defaultdict
 import json
-
-app = Flask(__name__, static_folder='.', static_url_path='')
-
-@app.route('/')
-def index():
-    return send_from_directory('.', 'index.html')
-
-
-# ═══════════════════════════════════════════════
-#  /analyze  — POST
-# ═══════════════════════════════════════════════
-@app.route('/analyze', methods=['POST'])
-def analyze():
-    data  = request.get_json()
-    files = data.get('files', [])
-    if not files:
-        return jsonify({'error': 'Dosya bulunamadı.'}), 400
-
-    all_items = flatten(files)
-
-    # Traverse ile derin analiz
-    hierarchy, node_count, type_dist, schema_fields, \
-    null_missing, parent_child, user_keys_per_index = traverse_all(all_items)
-
-    # Missing alan tespiti
-    if user_keys_per_index:
-        all_user_keys = set().union(*user_keys_per_index.values())
-        for idx, keys in user_keys_per_index.items():
-            for mk in all_user_keys - keys:
-                null_missing.append({'kind': 'MISSING', 'path': f'[{idx}].{mk}'})
-
-    schemas = detect_schemas(all_items)
-
-    type_stats = collect_type_stats(all_items)
-    schemas    = detect_schemas(all_items)
-
-    result = {
-        'totalObjects':  len(all_items),
-        'totalNodes':    node_count,
-        'schemaCount':   len(schemas),
-        'maxDepth':      get_max_depth(all_items[0]) if all_items else 0,
-        'totalKeys':     len(schema_fields),
-        'typeDistribution': dict(type_dist),
-        'typeStats':     type_stats,
-        'schemaFields':  sorted(list(schema_fields)),
-        'nullMissing':   null_missing,
-        'hierarchy':     hierarchy,
-        'parentChild':   parent_child,
-        'schemas':       schemas,
-        'structureMap':  build_structure_map(all_items[0]) if all_items else {},
-    }
-    return jsonify(result)
-
-
-# ═══════════════════════════════════════════════
-#  /operation  — POST
-# ═══════════════════════════════════════════════
-@app.route('/operation', methods=['POST'])
-def operation():
-    data  = request.get_json()
-    op    = data.get('op')
-    files = data.get('files', [])
-
-    if not files:
-        return jsonify({'error': 'Dosya bulunamadı.'}), 400
-    if op not in ('merge', 'trim', 'dedupe'):
-        return jsonify({'error': f'Geçersiz işlem: {op}'}), 400
-
-    all_items = flatten(files)
-
-    if op == 'merge':
-        result_data = all_items
-        label   = 'Merge'
-        summary = f'{len(files)} dosya → {len(result_data)} obje birleştirildi'
-
-    elif op == 'trim':
-        LIMIT       = 100
-        result_data = all_items[:LIMIT]
-        removed     = len(all_items) - len(result_data)
-        label   = 'Kırpma'
-        summary = f'{len(all_items)} → {len(result_data)} obje ({removed} kaldırıldı)'
-
-    elif op == 'dedupe':
-        seen, result_data = set(), []
-        for item in all_items:
-            key = json.dumps(item, sort_keys=True)
-            if key not in seen:
-                seen.add(key)
-                result_data.append(item)
-        removed = len(all_items) - len(result_data)
-        label   = 'Duplicate Temizleme'
-        summary = f'{len(all_items)} → {len(result_data)} obje ({removed} duplicate kaldırıldı)'
-
-    return jsonify({'label': label, 'summary': summary,
-                    'count': len(result_data), 'data': result_data})
+from collections import defaultdict, Counter
 
 
 # ═══════════════════════════════════════════════
@@ -223,7 +123,7 @@ def collect_type_stats(items):
         elif isinstance(val, int):
             integers.append(val)
         elif isinstance(val, float):
-            pass  # float ayrı tip, integer'a karıştırmıyoruz
+            pass
         elif isinstance(val, str):
             strings.append(len(val.split()))
         elif isinstance(val, list):
@@ -253,10 +153,9 @@ def collect_type_stats(items):
         }
 
     if integers:
-        from collections import Counter
-        freq    = Counter(integers)
-        most    = freq.most_common(1)[0]
-        least   = freq.most_common()[-1]
+        freq  = Counter(integers)
+        most  = freq.most_common(1)[0]
+        least = freq.most_common()[-1]
         stats['integer'] = {
             'mostUsedValue':  most[0],
             'mostUsedCount':  most[1],
@@ -274,6 +173,7 @@ def collect_type_stats(items):
         }
 
     return stats
+
 
 def detect_schemas(items):
     schemas = []
@@ -305,6 +205,80 @@ def get_max_depth(item, depth=0):
 
 
 # ═══════════════════════════════════════════════
-if __name__ == '__main__':
-    print('\n  JSON Tool çalışıyor → http://localhost:5000\n')
-    app.run(debug=True, port=5000)
+#  ANA ANALİZ PIPELINE
+# ═══════════════════════════════════════════════
+def run_analysis(files):
+    """Tüm analizi çalıştırır ve sonuç dict'ini döner."""
+    all_items = flatten(files)
+    if not all_items:
+        return None
+
+    hierarchy, node_count, type_dist, schema_fields, \
+    null_missing, parent_child, user_keys_per_index = traverse_all(all_items)
+
+    # Missing alan tespiti
+    if user_keys_per_index:
+        all_user_keys = set().union(*user_keys_per_index.values())
+        for idx, keys in user_keys_per_index.items():
+            for mk in all_user_keys - keys:
+                null_missing.append({'kind': 'MISSING', 'path': f'[{idx}].{mk}'})
+
+    type_stats = collect_type_stats(all_items)
+    schemas    = detect_schemas(all_items)
+
+    return {
+        'totalObjects':     len(all_items),
+        'totalNodes':       node_count,
+        'schemaCount':      len(schemas),
+        'maxDepth':         get_max_depth(all_items[0]),
+        'totalKeys':        len(schema_fields),
+        'typeDistribution': dict(type_dist),
+        'typeStats':        type_stats,
+        'schemaFields':     sorted(list(schema_fields)),
+        'nullMissing':      null_missing,
+        'hierarchy':        hierarchy,
+        'parentChild':      parent_child,
+        'schemas':          schemas,
+        'structureMap':     build_structure_map(all_items[0]),
+    }
+
+
+# ═══════════════════════════════════════════════
+#  İŞLEM PIPELINE
+# ═══════════════════════════════════════════════
+def run_operation(op, files):
+    """Merge / trim / dedupe işlemlerini çalıştırır ve sonuç dict'ini döner."""
+    all_items = flatten(files)
+
+    if op == 'merge':
+        result_data = all_items
+        label   = 'Merge'
+        summary = f'{len(files)} dosya → {len(result_data)} obje birleştirildi'
+
+    elif op == 'trim':
+        LIMIT       = 100
+        result_data = all_items[:LIMIT]
+        removed     = len(all_items) - len(result_data)
+        label   = 'Kırpma'
+        summary = f'{len(all_items)} → {len(result_data)} obje ({removed} kaldırıldı)'
+
+    elif op == 'dedupe':
+        seen, result_data = set(), []
+        for item in all_items:
+            key = json.dumps(item, sort_keys=True)
+            if key not in seen:
+                seen.add(key)
+                result_data.append(item)
+        removed = len(all_items) - len(result_data)
+        label   = 'Duplicate Temizleme'
+        summary = f'{len(all_items)} → {len(result_data)} obje ({removed} duplicate kaldırıldı)'
+
+    else:
+        return None
+
+    return {
+        'label':   label,
+        'summary': summary,
+        'count':   len(result_data),
+        'data':    result_data,
+    }

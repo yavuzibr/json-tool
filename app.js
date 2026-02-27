@@ -172,6 +172,8 @@ function renderAnalysisResult(r) {
 
     ${renderTypeDistribution(r.typeDistribution)}
 
+    ${r.typeStats && Object.keys(r.typeStats).length ? renderTypeStats(r.typeStats) : ''}
+
     ${renderSchemaFields(r.schemaFields)}
 
     ${r.nullMissing.length ? renderNullMissing(r.nullMissing) : ''}
@@ -253,6 +255,111 @@ function renderTypeDistribution(dist) {
 }
 
 // ── Schema Alanları ──
+
+// ── Type İstatistikleri ──
+function renderTypeStats(stats) {
+  let sections = [];
+
+  if (stats.string) {
+    const s = stats.string;
+    sections.push(`
+      <div class="stats-group">
+        <div class="stats-group__title">
+          <span class="stats-group__dot" style="background:#a8d8a8"></span>
+          String <span class="stats-group__total">${s.total} değer</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stats-cell">
+            <div class="stats-cell__val">${s.minWords}</div>
+            <div class="stats-cell__lbl">min kelime</div>
+          </div>
+          <div class="stats-cell">
+            <div class="stats-cell__val">${s.maxWords}</div>
+            <div class="stats-cell__lbl">max kelime</div>
+          </div>
+          <div class="stats-cell">
+            <div class="stats-cell__val">${s.avgWords}</div>
+            <div class="stats-cell__lbl">ort. kelime</div>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  if (stats.boolean) {
+    const b = stats.boolean;
+    const truePct  = Math.round((b.trueCount  / b.total) * 100);
+    const falsePct = Math.round((b.falseCount / b.total) * 100);
+    sections.push(`
+      <div class="stats-group">
+        <div class="stats-group__title">
+          <span class="stats-group__dot" style="background:#fb923c"></span>
+          Boolean <span class="stats-group__total">${b.total} değer</span>
+        </div>
+        <div class="bool-bar-wrap">
+          <div class="bool-bar__true"  style="width:${truePct}%">
+            ${truePct > 10 ? `<span>true</span>` : ''}
+          </div>
+          <div class="bool-bar__false" style="width:${falsePct}%">
+            ${falsePct > 10 ? `<span>false</span>` : ''}
+          </div>
+        </div>
+        <div class="bool-legend">
+          <span class="bool-legend__item bool-legend__item--true">✓ true — ${b.trueCount}</span>
+          <span class="bool-legend__item bool-legend__item--false">✗ false — ${b.falseCount}</span>
+        </div>
+      </div>`);
+  }
+
+  if (stats.integer) {
+    const n = stats.integer;
+    sections.push(`
+      <div class="stats-group">
+        <div class="stats-group__title">
+          <span class="stats-group__dot" style="background:#d4f54b"></span>
+          Integer <span class="stats-group__total">${n.total} değer</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stats-cell stats-cell--wide">
+            <div class="stats-cell__val" style="color:#d4f54b">${n.mostUsedValue}</div>
+            <div class="stats-cell__lbl">en çok kullanılan (${n.mostUsedCount}×)</div>
+          </div>
+          <div class="stats-cell stats-cell--wide">
+            <div class="stats-cell__val" style="color:var(--text-muted)">${n.leastUsedValue}</div>
+            <div class="stats-cell__lbl">en az kullanılan (${n.leastUsedCount}×)</div>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  if (stats.array) {
+    const a = stats.array;
+    sections.push(`
+      <div class="stats-group">
+        <div class="stats-group__title">
+          <span class="stats-group__dot" style="background:#a78bfa"></span>
+          Array <span class="stats-group__total">${a.total} dizi</span>
+        </div>
+        <div class="stats-grid">
+          <div class="stats-cell">
+            <div class="stats-cell__val">${a.minLength}</div>
+            <div class="stats-cell__lbl">min eleman</div>
+          </div>
+          <div class="stats-cell">
+            <div class="stats-cell__val">${a.maxLength}</div>
+            <div class="stats-cell__lbl">max eleman</div>
+          </div>
+          <div class="stats-cell">
+            <div class="stats-cell__val">${a.avgLength}</div>
+            <div class="stats-cell__lbl">ort. eleman</div>
+          </div>
+        </div>
+      </div>`);
+  }
+
+  return accordion('📈 Type İstatistikleri',
+    `<div class="stats-body">${sections.join('')}</div>`, true);
+}
+
 function renderSchemaFields(fields) {
   const tags = fields.map(f =>
     `<span class="field-tag">${f}</span>`
