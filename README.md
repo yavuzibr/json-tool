@@ -1,129 +1,124 @@
 # { JSON Tool }
 
-> Analyze. Transform. Export.
+<p align="center">
+<img src="[https://img.shields.io/github/license/kullanici/json-tool?style=flat-square&color=5D5DFF](https://www.google.com/search?q=https://img.shields.io/github/license/kullanici/json-tool%3Fstyle%3Dflat-square%26color%3D5D5DFF)" alt="License">
+<img src="[https://img.shields.io/badge/python-3.8%2B-blue?style=flat-square&logo=python](https://www.google.com/search?q=https://img.shields.io/badge/python-3.8%252B-blue%3Fstyle%3Dflat-square%26logo%3Dpython)" alt="Python Version">
+<img src="[https://img.shields.io/badge/backend-Flask-lightgrey?style=flat-square](https://www.google.com/search?q=https://img.shields.io/badge/backend-Flask-lightgrey%3Fstyle%3Dflat-square)" alt="Backend">
+<img src="[https://img.shields.io/badge/frontend-VanillaJS-yellow?style=flat-square](https://www.google.com/search?q=https://img.shields.io/badge/frontend-VanillaJS-yellow%3Fstyle%3Dflat-square)" alt="Frontend">
+</p>
 
-JSON dosyalarını analiz etmek, dönüştürmek ve dışa aktarmak için geliştirilmiş minimal bir developer aracı.
-Flask tabanlı backend, sade ve hızlı bir frontend.
+
 
 <p align="center">
-  <img src="./assets/cover.png" width="100%">
+<img src="./assets/cover.png" width="100%" alt="JSON Tool Cover">
 </p>
 
 ---
 
-## ✦ Özellikler
+## ✦ Öne Çıkan Özellikler
 
-**Analiz**
+### 📊 Derinlemesine Analiz
 
-* Şema tespiti — farklı obje yapılarını otomatik gruplar
-* Type dağılımı — interaktif pasta grafiği ile görselleştirme
-* Type istatistikleri — string kelime sayısı, integer frekansı, boolean oranı, array uzunluğu
-* Null / Missing alan tespiti — eksik veya boş alanları listeler
-* Hiyerarşi görünümü — iç içe yapıyı ağaç olarak gösterir
-* Yapı haritası — JSON'un iskeletini çıkarır
+* **Şema Tespiti:** Farklı obje yapılarını otomatik olarak gruplandırır.
+* **Tip Dağılımı:** Veri tiplerini interaktif pasta grafikleriyle görselleştirir.
+* **Veri İstatistikleri:** String kelime sayısı, integer frekansı, array uzunlukları gibi detaylar.
+* **Eksik Veri Takibi:** `Null` veya `Missing` alanları anında listeler.
+* **Görsel Hiyerarşi:** JSON yapısını ağaç (tree) ve iskelet (map) görünümünde sunar.
 
-**İşlemler**
+### 🛠 Veri İşlemleri
 
-* **Merge** — birden fazla JSON dosyasını tek dosyada birleştirir
-* **Trim** — ilk 100 objeyi alır, kalanı atar
-* **Dedupe** — tekrar eden objeleri temizler
+* **Merge:** Birden fazla JSON dosyasını tutarlı bir şekilde tek dosyada birleştirir.
+* **Trim:** Büyük veri setlerini hızlı önizleme için optimize eder (ilk 100 obje).
+* **Dedupe:** Tekrar eden (duplicate) objeleri akıllıca temizler.
 
-**Arayüz**
+### 🎨 Kullanıcı Deneyimi
 
-* Dark / Light tema desteği
-* Kopyala ve JSON olarak indirme
-* Çoklu dosya ve klasör yükleme
+* **Dark / Light Mode:** Göz yormayan, modern arayüz seçenekleri.
+* **Hızlı Aksiyonlar:** Tek tıkla kopyalama ve farklı formatlarda indirme.
+* **Modern Tipografi:** *Syne* ve *DM Mono* fontları ile geliştirici dostu okunabilirlik.
 
 ---
 
 ## 🖼 Uygulama Görselleri
 
 <p align="center">
-  <img src="./assets/schema.png" width="49%">
-  <img src="./assets/types.png" width="49%">
+<img src="./assets/schema.png" width="49%">
+<img src="./assets/types.png" width="49%">
 </p>
 
 <p align="center">
-  <img src="./assets/tree.png" width="49%">
-  <img src="./assets/merge.png" width="49%">
+<img src="./assets/tree.png" width="49%">
+<img src="./assets/merge.png" width="49%">
 </p>
 
 ---
 
-## ⚙ Kurulum
+## ⚙ Kurulum ve Başlatma
 
 ### Gereksinimler
 
-* Python 3.8+
-* pip
+* **Python 3.8+**
+* **pip** (Python paket yöneticisi)
 
 ### Adımlar
 
+1. **Repoyu klonlayın:**
 ```bash
-# 1. Repoyu klonla
 git clone https://github.com/kullanici/json-tool.git
 cd json-tool
 
-# 2. Bağımlılıkları yükle
-pip install -r requirements.txt
-
-# 3. Sunucuyu başlat
-cd backend
-python app.py
 ```
 
-Tarayıcıda aç → [http://localhost:5000](http://localhost:5000)
+
+2. **Bağımlılıkları yükleyin:**
+```bash
+pip install -r requirements.txt
+
+```
+
+
+3. **Backend sunucusunu başlatın:**
+```bash
+cd backend
+python app.py
+
+```
+
+
+4. **Tarayıcıda açın:** [http://localhost:5000](https://www.google.com/search?q=http://localhost:5000)
 
 ---
 
 ## 📁 Dosya Yapısı
 
-```
+```text
 json-tool/
-│
 ├── backend/
-│   ├── app.py          # Flask route'ları
-│   └── analyzer.py     # Analiz ve işlem mantığı
-│
+│   ├── app.py           # API Route'ları ve Flask yapılandırması
+│   └── analyzer.py      # Core analiz ve veri işleme mantığı
 ├── frontend/
-│   ├── index.html
-│   ├── css/
-│   │   ├── main.css        # Variables, reset, base
-│   │   ├── layout.css      # Header, paneller, grid
-│   │   └── components.css  # Butonlar, kartlar, grafikler
-│   └── js/
-│       ├── state.js    # Uygulama state'i
-│       ├── api.js      # Backend fetch çağrıları
-│       ├── render.js   # DOM render fonksiyonları
-│       └── main.js     # Event listener'lar, init
-│
-├── assets/
-│   ├── cover.png
-│   ├── schema.png
-│   ├── types.png
-│   ├── tree.png
-│   └── merge.png
-│
-├── .gitignore
-├── requirements.txt
-└── README.md
+│   ├── index.html       # Ana yapı
+│   ├── css/             # Modüler stil dosyaları (Layout, Components)
+│   └── js/              # ESM tabanlı state ve render yönetimi
+├── assets/              # Uygulama içi görseller ve ikonlar
+└── requirements.txt     # Python bağımlılık listesi
+
 ```
 
 ---
 
-## 🛠 Kullanılan Teknolojiler
+## 🛠 API Referansı
 
-| Katman   | Teknoloji        |
-| -------- | ---------------- |
-| Backend  | Python, Flask    |
-| Frontend | Vanilla JS (ESM) |
-| Stil     | CSS Variables    |
-| Fontlar  | Syne, DM Mono    |
+| Endpoint | Method | Açıklama |
+| --- | --- | --- |
+| `/api/analyze` | `POST` | JSON dosyasını analiz eder ve istatistik döner. |
+| `/api/merge` | `POST` | Yüklenen çoklu dosyaları birleştirir. |
+| `/api/transform` | `POST` | Trim ve Dedupe işlemlerini uygular. |
 
 ---
 
 ## 📄 Lisans
 
-MIT
+Bu proje **MIT Lisansı** altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına göz atabilirsiniz.
 
 ---
