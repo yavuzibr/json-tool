@@ -1,0 +1,144 @@
+/* ═══════════════════════════════════════════════
+   JSON TOOL — layout.css
+   Header, theme-switch, layout grid,
+   panels, sections, status bar
+═══════════════════════════════════════════════ */
+
+/* ── HEADER ──────────────────────────────────── */
+.header {
+  height: var(--header-h);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  animation: fadeUp 0.35s ease both;
+}
+
+.header__logo {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.header__logo-bracket { color: var(--accent); font-weight: 300; }
+.header__logo-text    { margin: 0 4px; }
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__tagline {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── THEME SWITCH ────────────────────────────── */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-switch__icon {
+  font-size: 13px;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.theme-switch__track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  background: var(--bg-active);
+  border: 1px solid var(--border-mid);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease);
+}
+.theme-switch__track:hover { border-color: var(--accent); }
+
+.theme-switch__thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+[data-theme="light"] .theme-switch__thumb {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+
+/* ── LAYOUT GRID ─────────────────────────────── */
+.layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  height: calc(100vh - var(--header-h) - var(--status-h));
+  overflow: hidden;
+}
+
+/* ── PANELS ──────────────────────────────────── */
+.panel {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-mid) transparent;
+}
+
+.panel--control {
+  background: var(--bg-panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.35s ease 0.08s both;
+}
+
+.panel--output {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.35s ease 0.16s both;
+}
+
+/* ── SECTIONS ────────────────────────────────── */
+.section {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section__title {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+/* ── STATUS BAR ──────────────────────────────── */
+.statusbar {
+  height: var(--status-h);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  gap: 10px;
+  background: var(--bg-panel);
+}
+.statusbar__item { font-size: 11px; color: var(--text-muted); }
+.statusbar__sep  { font-size: 11px; color: var(--text-dim); }
