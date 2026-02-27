@@ -6,7 +6,7 @@
   <title>JSON Tool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
 
@@ -18,13 +18,13 @@
       <span class="header__logo-bracket">}</span>
     </div>
     <div class="header__right">
-    <p class="header__tagline">Analyze. Transform. Export.</p>
-    <div class="theme-switch" id="themeSwitch" title="Temayı değiştir">
-      <span class="theme-switch__icon">☀</span>
-      <div class="theme-switch__track"><div class="theme-switch__thumb"></div></div>
-      <span class="theme-switch__icon">☾</span>
+      <p class="header__tagline">Analyze. Transform. Export.</p>
+      <div class="theme-switch" id="themeSwitch" title="Temayı değiştir">
+        <span class="theme-switch__icon">☀</span>
+        <div class="theme-switch__track"><div class="theme-switch__thumb"></div></div>
+        <span class="theme-switch__icon">☾</span>
+      </div>
     </div>
-  </div>
   </header>
 
   <!-- MAIN -->
@@ -33,7 +33,6 @@
     <!-- SOL PANEL -->
     <aside class="panel panel--control">
 
-      <!-- Girdi -->
       <section class="section">
         <h2 class="section__title">Girdi</h2>
         <div class="input-group">
@@ -53,7 +52,6 @@
         </ul>
       </section>
 
-      <!-- Mod -->
       <section class="section">
         <h2 class="section__title">Mod</h2>
         <div class="mode-tabs">
@@ -66,16 +64,13 @@
         </div>
       </section>
 
-      <!-- Analiz Seçenekleri -->
       <section class="section section--options" id="analyzeOptions">
         <h2 class="section__title">Analiz Seçenekleri</h2>
         <label class="checkbox"><input type="checkbox" checked /> Şema Tespiti</label>
         <label class="checkbox"><input type="checkbox" checked /> Veri Türleri</label>
         <label class="checkbox"><input type="checkbox" checked /> Yapı Haritası</label>
-
       </section>
 
-      <!-- İşlem Seçenekleri -->
       <section class="section section--options hidden" id="operationsOptions">
         <h2 class="section__title">İşlemler</h2>
         <button class="op-btn" data-op="merge"><span>⇌</span> İki JSON Merge</button>
@@ -83,7 +78,6 @@
         <button class="op-btn" data-op="dedupe"><span>⊘</span> Duplicate Temizle</button>
       </section>
 
-      <!-- Çalıştır -->
       <div class="run-area">
         <button class="run-btn" id="runBtn">
           <span class="run-btn__text">Çalıştır</span>
@@ -127,6 +121,6 @@
     <span class="statusbar__item" id="statusState">Hazır</span>
   </footer>
 
-  <script src="app.js"></script>
+  <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+/* ═══════════════════════════════════════════════
+   JSON TOOL — main.css
+   Variables, reset, base stiller, animations
+   @import ile diğer dosyaları yükler
+═══════════════════════════════════════════════ */
+
+@import url('layout.css');
+@import url('components.css');
+
+/* ── VARIABLES ───────────────────────────────── */
+:root {
+  --bg:           #0a0a0a;
+  --bg-panel:     #111111;
+  --bg-hover:     #1a1a1a;
+  --bg-active:    #1f1f1f;
+  --border:       #222222;
+  --border-mid:   #2e2e2e;
+  --text:         #e8e8e8;
+  --text-muted:   #555555;
+  --text-dim:     #333333;
+  --accent:       #d4f54b;
+  --danger:       #ff4d4d;
+  --info:         #4db8ff;
+  --radius:       4px;
+  --radius-lg:    8px;
+  --font-display: 'Syne', sans-serif;
+  --font-mono:    'DM Mono', monospace;
+  --header-h:     56px;
+  --status-h:     32px;
+  --sidebar-w:    280px;
+  --ease:         150ms ease;
+}
+
+[data-theme="light"] {
+  --bg:         #f5f5f0;
+  --bg-panel:   #ecece6;
+  --bg-hover:   #e4e4dc;
+  --bg-active:  #dcdcd2;
+  --border:     #d4d4c8;
+  --border-mid: #c0c0b4;
+  --text:       #1a1a1a;
+  --text-muted: #888878;
+  --text-dim:   #c0c0b0;
+  --accent:     #4a7c00;
+  --danger:     #cc2200;
+  --info:       #0055bb;
+}
+
+[data-theme="light"] .json-string  { color: #2a7a2a; }
+[data-theme="light"] .json-boolean { color: #b36000; }
+[data-theme="light"] .json-null    { color: var(--text-muted); }
+
+/* ── RESET ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { transition: background 0.2s ease, color 0.2s ease; }
+ul { list-style: none; }
+button { cursor: pointer; font-family: inherit; font-size: inherit; }
+.hidden { display: none !important; }
+
+/* ── BASE ────────────────────────────────────── */
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse { 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
+.is-loading .run-btn__text { animation: pulse 1s ease infinite; }
+
+/* ── SCROLLBAR ───────────────────────────────── */
+::-webkit-scrollbar       { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
