@@ -2,41 +2,60 @@
 
 > Analyze. Transform. Export.
 
-JSON dosyalarını analiz etmek, dönüştürmek ve dışa aktarmak için geliştirilmiş minimal bir developer aracı. Flask tabanlı backend, sade ve hızlı bir frontend.
+JSON dosyalarını analiz etmek, dönüştürmek ve dışa aktarmak için geliştirilmiş minimal bir developer aracı.
+Flask tabanlı backend, sade ve hızlı bir frontend.
 
----
-
-![JSON Tool Screenshot](https://via.placeholder.com/1200x650/0a0a0a/d4f54b?text=JSON+Tool+Screenshot)
+<p align="center">
+  <img src="./assets/cover.png" width="100%">
+</p>
 
 ---
 
 ## ✦ Özellikler
 
 **Analiz**
-- Şema tespiti — farklı obje yapılarını otomatik gruplar
-- Type dağılımı — interaktif pasta grafiği ile görselleştirme
-- Type istatistikleri — string kelime sayısı, integer frekansı, boolean oranı, array uzunluğu
-- Null / Missing alan tespiti — eksik veya boş alanları listeler
-- Hiyerarşi görünümü — iç içe yapıyı ağaç olarak gösterir
-- Yapı haritası — JSON'un iskeletini çıkarır
+
+* Şema tespiti — farklı obje yapılarını otomatik gruplar
+* Type dağılımı — interaktif pasta grafiği ile görselleştirme
+* Type istatistikleri — string kelime sayısı, integer frekansı, boolean oranı, array uzunluğu
+* Null / Missing alan tespiti — eksik veya boş alanları listeler
+* Hiyerarşi görünümü — iç içe yapıyı ağaç olarak gösterir
+* Yapı haritası — JSON'un iskeletini çıkarır
 
 **İşlemler**
-- **Merge** — birden fazla JSON dosyasını tek dosyada birleştirir
-- **Trim** — ilk 100 objeyi alır, kalanı atar
-- **Dedupe** — tekrar eden objeleri temizler
+
+* **Merge** — birden fazla JSON dosyasını tek dosyada birleştirir
+* **Trim** — ilk 100 objeyi alır, kalanı atar
+* **Dedupe** — tekrar eden objeleri temizler
 
 **Arayüz**
-- Dark / Light tema desteği
-- Kopyala ve JSON olarak indirme
-- Çoklu dosya ve klasör yükleme
+
+* Dark / Light tema desteği
+* Kopyala ve JSON olarak indirme
+* Çoklu dosya ve klasör yükleme
+
+---
+
+## 🖼 Uygulama Görselleri
+
+<p align="center">
+  <img src="./assets/schema.png" width="49%">
+  <img src="./assets/types.png" width="49%">
+</p>
+
+<p align="center">
+  <img src="./assets/tree.png" width="49%">
+  <img src="./assets/merge.png" width="49%">
+</p>
 
 ---
 
 ## ⚙ Kurulum
 
 ### Gereksinimler
-- Python 3.8+
-- pip
+
+* Python 3.8+
+* pip
 
 ### Adımlar
 
@@ -78,6 +97,13 @@ json-tool/
 │       ├── render.js   # DOM render fonksiyonları
 │       └── main.js     # Event listener'lar, init
 │
+├── assets/
+│   ├── cover.png
+│   ├── schema.png
+│   ├── types.png
+│   ├── tree.png
+│   └── merge.png
+│
 ├── .gitignore
 ├── requirements.txt
 └── README.md
@@ -87,15 +113,17 @@ json-tool/
 
 ## 🛠 Kullanılan Teknolojiler
 
-| Katman    | Teknoloji          |
-|-----------|--------------------|
-| Backend   | Python, Flask      |
-| Frontend  | Vanilla JS (ESM)   |
-| Stil      | CSS Variables      |
-| Fontlar   | Syne, DM Mono      |
+| Katman   | Teknoloji        |
+| -------- | ---------------- |
+| Backend  | Python, Flask    |
+| Frontend | Vanilla JS (ESM) |
+| Stil     | CSS Variables    |
+| Fontlar  | Syne, DM Mono    |
 
 ---
 
 ## 📄 Lisans
 
 MIT
+
+---
