@@ -124,13 +124,25 @@ function renderTypeStats(stats) {
           <span class="stats-group__dot" style="background:#fb923c"></span>
           Boolean <span class="stats-group__total">${b.total} değer</span>
         </div>
-        <div class="bool-bar-wrap">
-          <div class="bool-bar__true"  style="width:${truePct}%">${truePct > 10 ? '<span>true</span>' : ''}</div>
-          <div class="bool-bar__false" style="width:${falsePct}%">${falsePct > 10 ? '<span>false</span>' : ''}</div>
-        </div>
-        <div class="bool-legend">
-          <span class="bool-legend__item bool-legend__item--true">✓ true — ${b.trueCount}</span>
-          <span class="bool-legend__item bool-legend__item--false">✗ false — ${b.falseCount}</span>
+        <div class="bool-chart">
+          <div class="bool-chart__row">
+            <span class="bool-chart__label bool-chart__label--true">true</span>
+            <div class="bool-chart__track">
+              <div class="bool-chart__bar bool-chart__bar--true" style="width:${truePct}%">
+                <span class="bool-chart__bar-val">${b.trueCount}</span>
+              </div>
+            </div>
+            <span class="bool-chart__pct">${truePct}%</span>
+          </div>
+          <div class="bool-chart__row">
+            <span class="bool-chart__label bool-chart__label--false">false</span>
+            <div class="bool-chart__track">
+              <div class="bool-chart__bar bool-chart__bar--false" style="width:${falsePct}%">
+                <span class="bool-chart__bar-val">${b.falseCount}</span>
+              </div>
+            </div>
+            <span class="bool-chart__pct">${falsePct}%</span>
+          </div>
         </div>
       </div>`);
   }
