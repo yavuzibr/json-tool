@@ -43,6 +43,9 @@ def analyze():
 
     schemas = detect_schemas(all_items)
 
+    type_stats = collect_type_stats(all_items)
+    schemas    = detect_schemas(all_items)
+
     result = {
         'totalObjects':  len(all_items),
         'totalNodes':    node_count,
@@ -50,6 +53,7 @@ def analyze():
         'maxDepth':      get_max_depth(all_items[0]) if all_items else 0,
         'totalKeys':     len(schema_fields),
         'typeDistribution': dict(type_dist),
+        'typeStats':     type_stats,
         'schemaFields':  sorted(list(schema_fields)),
         'nullMissing':   null_missing,
         'hierarchy':     hierarchy,
@@ -204,6 +208,73 @@ def traverse_all(items):
 # ═══════════════════════════════════════════════
 #  DİĞER ANALİZ FONKSİYONLARI
 # ═══════════════════════════════════════════════
+
+def collect_type_stats(items):
+    """String, boolean, integer, array için detaylı istatistik toplar."""
+    strings  = []
+    booleans = {'true': 0, 'false': 0}
+    integers = []
+    arrays   = []
+
+    def walk(val):
+        if isinstance(val, bool):
+            if val: booleans['true']  += 1
+            else:   booleans['false'] += 1
+        elif isinstance(val, int):
+            integers.append(val)
+        elif isinstance(val, float):
+            pass  # float ayrı tip, integer'a karıştırmıyoruz
+        elif isinstance(val, str):
+            strings.append(len(val.split()))
+        elif isinstance(val, list):
+            arrays.append(len(val))
+            for item in val: walk(item)
+        elif isinstance(val, dict):
+            for v in val.values(): walk(v)
+
+    for item in items:
+        walk(item)
+
+    stats = {}
+
+    if strings:
+        stats['string'] = {
+            'minWords': min(strings),
+            'maxWords': max(strings),
+            'avgWords': round(sum(strings) / len(strings), 1),
+            'total':    len(strings),
+        }
+
+    if booleans['true'] + booleans['false'] > 0:
+        stats['boolean'] = {
+            'trueCount':  booleans['true'],
+            'falseCount': booleans['false'],
+            'total':      booleans['true'] + booleans['false'],
+        }
+
+    if integers:
+        from collections import Counter
+        freq    = Counter(integers)
+        most    = freq.most_common(1)[0]
+        least   = freq.most_common()[-1]
+        stats['integer'] = {
+            'mostUsedValue':  most[0],
+            'mostUsedCount':  most[1],
+            'leastUsedValue': least[0],
+            'leastUsedCount': least[1],
+            'total':          len(integers),
+        }
+
+    if arrays:
+        stats['array'] = {
+            'minLength': min(arrays),
+            'maxLength': max(arrays),
+            'avgLength': round(sum(arrays) / len(arrays), 1),
+            'total':     len(arrays),
+        }
+
+    return stats
+
 def detect_schemas(items):
     schemas = []
     for item in items:
