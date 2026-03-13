@@ -1,6 +1,5 @@
 // ═══════════════════════════════════════════════
-//  JSON TOOL — api.js
-//  Backend fetch çağrıları
+//  JSON TOOL — api.js  (v2)
 // ═══════════════════════════════════════════════
 
 async function post(endpoint, body) {

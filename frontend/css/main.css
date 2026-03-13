@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════
-   JSON TOOL — main.css
-   Variables, reset, base stiller, animations
-   @import ile diğer dosyaları yükler
+   JSON TOOL — main.css  (v2)
+   Variables · Reset · Base · Animations
+   @import diğer modülleri yükler
 ═══════════════════════════════════════════════ */
 
 @import url('layout.css');
@@ -9,52 +9,104 @@
 
 /* ── VARIABLES ───────────────────────────────── */
 :root {
-  --bg:           #0a0a0a;
-  --bg-panel:     #111111;
-  --bg-hover:     #1a1a1a;
-  --bg-active:    #1f1f1f;
-  --border:       #222222;
-  --border-mid:   #2e2e2e;
-  --text:         #e8e8e8;
-  --text-muted:   #555555;
-  --text-dim:     #333333;
-  --accent:       #d4f54b;
-  --danger:       #ff4d4d;
-  --info:         #4db8ff;
-  --radius:       4px;
-  --radius-lg:    8px;
-  --font-display: 'DM Sans', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-  --header-h:     56px;
-  --status-h:     32px;
-  --sidebar-w:    280px;
-  --ease:         150ms ease;
+  /* surfaces */
+  --bg:           #080b0f;
+  --bg-panel:     #0d1117;
+  --bg-card:      #111820;
+  --bg-hover:     #161f2a;
+  --bg-active:    #1a2535;
+  --bg-input:     #0f1923;
+
+  /* borders */
+  --border:       #1e2d3d;
+  --border-mid:   #253548;
+  --border-hi:    #2e4057;
+
+  /* text */
+  --text:         #dde6f0;
+  --text-soft:    #8fa3b8;
+  --text-muted:   #4a6278;
+  --text-dim:     #253040;
+
+  /* accent palette */
+  --accent:       #38bdf8;
+  --accent-dim:   rgba(56,189,248,.12);
+  --accent-glow:  rgba(56,189,248,.25);
+  --green:        #4ade80;
+  --green-dim:    rgba(74,222,128,.12);
+  --yellow:       #fbbf24;
+  --yellow-dim:   rgba(251,191,36,.12);
+  --red:          #f87171;
+  --red-dim:      rgba(248,113,113,.12);
+  --purple:       #a78bfa;
+  --purple-dim:   rgba(167,139,250,.12);
+  --orange:       #fb923c;
+  --orange-dim:   rgba(251,146,60,.12);
+
+  /* type colors */
+  --t-object:  #38bdf8;
+  --t-array:   #a78bfa;
+  --t-string:  #4ade80;
+  --t-integer: #fbbf24;
+  --t-float:   #fb923c;
+  --t-boolean: #f472b6;
+  --t-null:    #4a6278;
+
+  /* layout */
+  --header-h:  52px;
+  --status-h:  28px;
+  --sidebar-w: 272px;
+  --radius:    6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+
+  /* type */
+  --font-ui:   'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* motion */
+  --ease:      160ms cubic-bezier(.4,0,.2,1);
+  --ease-out:  200ms cubic-bezier(0,0,.2,1);
 }
 
 [data-theme="light"] {
-  --bg:         #f5f5f0;
-  --bg-panel:   #ecece6;
-  --bg-hover:   #e4e4dc;
-  --bg-active:  #dcdcd2;
-  --border:     #d4d4c8;
-  --border-mid: #c0c0b4;
-  --text:       #1a1a1a;
-  --text-muted: #888878;
-  --text-dim:   #c0c0b0;
-  --accent:     #4a7c00;
-  --danger:     #cc2200;
-  --info:       #0055bb;
+  --bg:         #f0f4f8;
+  --bg-panel:   #e8eef4;
+  --bg-card:    #dde5ee;
+  --bg-hover:   #d4dfe9;
+  --bg-active:  #c8d5e2;
+  --bg-input:   #e0e9f2;
+  --border:     #b8ccdd;
+  --border-mid: #a0bace;
+  --border-hi:  #88a8be;
+  --text:       #0f1e2d;
+  --text-soft:  #3d5a73;
+  --text-muted: #6e8fa8;
+  --text-dim:   #9ab4ca;
+  --accent:     #0284c7;
+  --accent-dim: rgba(2,132,199,.1);
+  --green:      #16a34a;
+  --green-dim:  rgba(22,163,74,.1);
+  --yellow:     #d97706;
+  --yellow-dim: rgba(217,119,6,.1);
+  --red:        #dc2626;
+  --red-dim:    rgba(220,38,38,.1);
+  --purple:     #7c3aed;
+  --purple-dim: rgba(124,58,237,.1);
 }
 
-[data-theme="light"] .json-string  { color: #2a7a2a; }
-[data-theme="light"] .json-boolean { color: #b36000; }
+[data-theme="light"] .json-string  { color: var(--green); }
+[data-theme="light"] .json-boolean { color: var(--orange); }
 [data-theme="light"] .json-null    { color: var(--text-muted); }
+[data-theme="light"] .json-key     { color: var(--accent); }
+[data-theme="light"] .json-number  { color: var(--yellow); }
 
 /* ── RESET ───────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { transition: background 0.2s ease, color 0.2s ease; }
+html { transition: background .2s ease, color .2s ease; }
 ul { list-style: none; }
-button { cursor: pointer; font-family: inherit; font-size: inherit; }
+button { cursor: pointer; font-family: inherit; font-size: inherit; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
 .hidden { display: none !important; }
 
 /* ── BASE ────────────────────────────────────── */
@@ -63,21 +115,41 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.6;
+  font-size: 12.5px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ── ANIMATIONS ──────────────────────────────── */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes pulse { 0%,100%{ opacity:1 } 50%{ opacity:.35 } }
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
 
-@keyframes pulse { 0%,100%{ opacity:1 } 50%{ opacity:0.4 } }
 .is-loading .run-btn__text { animation: pulse 1s ease infinite; }
 
 /* ── SCROLLBAR ───────────────────────────────── */
 ::-webkit-scrollbar       { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-hi); }
+
+/* ── SYNTAX HIGHLIGHT ────────────────────────── */
+.json-key     { color: var(--accent); }
+.json-string  { color: var(--green); }
+.json-number  { color: var(--yellow); }
+.json-boolean { color: var(--orange); }
+.json-null    { color: var(--text-muted); }

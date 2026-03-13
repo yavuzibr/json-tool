@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JSON Tool</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
@@ -16,9 +16,10 @@
       <span class="header__logo-bracket">{</span>
       <span class="header__logo-text">JSON Tool</span>
       <span class="header__logo-bracket">}</span>
+      <span class="header__logo-badge">v2</span>
     </div>
     <div class="header__right">
-      <p class="header__tagline">Analyze. Transform. Export.</p>
+      <p class="header__tagline">Analyze · Inspect · Export</p>
       <div class="theme-switch" id="themeSwitch" title="Temayı değiştir">
         <span class="theme-switch__icon">☀</span>
         <div class="theme-switch__track"><div class="theme-switch__thumb"></div></div>
@@ -33,6 +34,7 @@
     <!-- SOL PANEL -->
     <aside class="panel panel--control">
 
+      <!-- Girdi -->
       <section class="section">
         <h2 class="section__title">Girdi</h2>
         <div class="input-group">
@@ -52,6 +54,7 @@
         </ul>
       </section>
 
+      <!-- Mod -->
       <section class="section">
         <h2 class="section__title">Mod</h2>
         <div class="mode-tabs">
@@ -64,13 +67,101 @@
         </div>
       </section>
 
+      <!-- Analiz Seçenekleri (toggle'lı) -->
       <section class="section section--options" id="analyzeOptions">
         <h2 class="section__title">Analiz Seçenekleri</h2>
-        <label class="checkbox"><input type="checkbox" checked /> Şema Tespiti</label>
-        <label class="checkbox"><input type="checkbox" checked /> Veri Türleri</label>
-        <label class="checkbox"><input type="checkbox" checked /> Yapı Haritası</label>
+        <div class="toggle-group">
+
+          <div class="toggle-section-label">Veri Kalitesi</div>
+          <label class="toggle-row is-on" data-key="nullMissing">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">⚠</span>
+              <span class="toggle-row__text">Null / Missing</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="dataQuality">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">🔍</span>
+              <span class="toggle-row__text">Veri Kalitesi</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+
+          <div class="toggle-section-label">Akıllı Tespit</div>
+          <label class="toggle-row is-on" data-key="patterns">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">🏷</span>
+              <span class="toggle-row__text">Pattern Tespiti</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="enums">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">📑</span>
+              <span class="toggle-row__text">Enum Tespiti</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="outliers">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">📉</span>
+              <span class="toggle-row__text">Outlier Tespiti</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="correlations">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">🔗</span>
+              <span class="toggle-row__text">Korelasyon</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+
+          <div class="toggle-section-label">Yapısal</div>
+          <label class="toggle-row is-on" data-key="fieldPresence">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">📊</span>
+              <span class="toggle-row__text">Alan Varlığı</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="schemaDrift">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">↔</span>
+              <span class="toggle-row__text">Schema Drift</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="jsonSchema">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">📐</span>
+              <span class="toggle-row__text">JSON Schema Export</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+          <label class="toggle-row is-on" data-key="hierarchy">
+            <input type="checkbox" checked hidden />
+            <span class="toggle-row__label">
+              <span class="toggle-row__icon">🌳</span>
+              <span class="toggle-row__text">Hiyerarşi</span>
+            </span>
+            <span class="toggle-switch"></span>
+          </label>
+
+        </div>
       </section>
 
+      <!-- İşlemler -->
       <section class="section section--options hidden" id="operationsOptions">
         <h2 class="section__title">İşlemler</h2>
         <button class="op-btn" data-op="merge"><span>⇌</span> İki JSON Merge</button>
@@ -91,22 +182,35 @@
     <section class="panel panel--output">
 
       <div class="output-header">
-        <h2 class="section__title">Çıktı</h2>
+        <h2 class="section__title" style="margin:0">Çıktı</h2>
         <div class="output-actions">
+          <button class="action-btn action-btn--schema" id="schemaBtn" disabled>Schema İndir</button>
           <button class="action-btn" id="copyBtn" disabled>Kopyala</button>
-          <button class="action-btn action-btn--primary" id="exportBtn" disabled>İndir</button>
+          <button class="action-btn action-btn--primary" id="exportBtn" disabled>JSON İndir</button>
         </div>
       </div>
 
+      <!-- Boş state -->
       <div class="output-empty" id="outputEmpty">
         <div class="output-empty__icon">{ }</div>
         <p class="output-empty__text">Dosya yükle ve <strong>Çalıştır</strong>'a bas.</p>
       </div>
 
+      <!-- Sonuç -->
       <div class="output-content hidden" id="outputContent">
+
+        <!-- Özet kartlar -->
         <div class="result-cards" id="resultCards"></div>
-        <div id="analysisBody" class="analysis-body"></div>
+
+        <!-- Tab bar -->
+        <div class="output-tabs" id="outputTabs"></div>
+
+        <!-- Tab paneller -->
+        <div id="tabPanels" style="flex:1;overflow-y:auto"></div>
+
+        <!-- İşlem JSON önizleme -->
         <pre class="json-preview hidden" id="jsonPreview"></pre>
+
       </div>
 
     </section>
@@ -114,7 +218,8 @@
 
   <!-- STATUS BAR -->
   <footer class="statusbar">
-    <span class="statusbar__item" id="statusMode">Mod: Analiz</span>
+    <div class="statusbar__dot" id="statusDot"></div>
+    <span class="statusbar__item" id="statusMode">Analiz</span>
     <span class="statusbar__sep">·</span>
     <span class="statusbar__item" id="statusFiles">Dosya: —</span>
     <span class="statusbar__sep">·</span>
