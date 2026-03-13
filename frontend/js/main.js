@@ -1,14 +1,13 @@
 // ═══════════════════════════════════════════════
-//  JSON TOOL — main.js
-//  Event listener'lar ve uygulama başlatma
+//  JSON TOOL — main.js  (v2)
 // ═══════════════════════════════════════════════
 
-import { state }                                    from './state.js';
-import { analyzeFiles, runOperation }               from './api.js';
+import { state }                               from './state.js';
+import { analyzeFiles, runOperation }          from './api.js';
 import { renderAnalysisResult, renderOperationResult,
-         resetOutput, syntaxHighlight }             from './render.js';
+         resetOutput, syntaxHighlight }        from './render.js';
 
-// ─── DOM referansları (render.js'e de export ediliyor) ───
+// ── DOM referansları ──────────────────────────
 const $ = id => document.getElementById(id);
 export const dom = {
   fileInput:      $('fileInput'),
@@ -23,11 +22,14 @@ export const dom = {
   runBtn:         $('runBtn'),
   copyBtn:        $('copyBtn'),
   exportBtn:      $('exportBtn'),
+  schemaBtn:      $('schemaBtn'),
   outputEmpty:    $('outputEmpty'),
   outputContent:  $('outputContent'),
   resultCards:    $('resultCards'),
-  analysisBody:   $('analysisBody'),
+  outputTabs:     $('outputTabs'),
+  tabPanels:      $('tabPanels'),
   jsonPreview:    $('jsonPreview'),
+  statusDot:      $('statusDot'),
   statusMode:     $('statusMode'),
   statusFiles:    $('statusFiles'),
   statusState:    $('statusState'),
@@ -56,12 +58,17 @@ dom.folderInput.addEventListener('change', async (e) => {
 
 async function loadFiles(fileList) {
   setStatus('Dosyalar okunuyor...');
+  setDot('active');
   try {
     state.files = await Promise.all(fileList.map(readFile));
     renderFileList();
     updateStatusBar();
     setStatus(`${state.files.length} dosya yüklendi.`);
-  } catch (err) { setStatus(`Hata: ${err.message}`); }
+    setDot('ok');
+  } catch (err) {
+    setStatus(`Hata: ${err.message}`);
+    setDot('error');
+  }
 }
 
 function readFile(file) {
@@ -83,14 +90,17 @@ function renderFileList() {
   }
   dom.fileList.innerHTML = state.files.map((f, i) => `
     <li class="file-list__item">
+      <span class="file-list__item-icon">◉</span>
       <span class="file-list__item-name" title="${f.name}">${f.name}</span>
-      <button class="file-list__item-remove" data-i="${i}">×</button>
+      <button class="file-list__item-remove" data-i="${i}" title="Kaldır">×</button>
     </li>`).join('');
+
   dom.fileList.querySelectorAll('.file-list__item-remove').forEach(btn => {
     btn.addEventListener('click', () => {
       state.files.splice(Number(btn.dataset.i), 1);
-      renderFileList(); updateStatusBar();
-      if (!state.files.length) { resetOutput(); state.lastResult = null; }
+      renderFileList();
+      updateStatusBar();
+      if (!state.files.length) { resetOutput(); state.lastResult = null; setDot(''); }
     });
   });
 }
@@ -122,6 +132,20 @@ dom.opBtns.forEach(btn => {
 });
 
 // ═══════════════════════════════════════════════
+//  TOGGLE SEÇENEKLERİ
+// ═══════════════════════════════════════════════
+document.querySelectorAll('.toggle-row[data-key]').forEach(row => {
+  row.addEventListener('click', () => {
+    const key = row.dataset.key;
+    const cb  = row.querySelector('input[type="checkbox"]');
+    const on  = !row.classList.contains('is-on');
+    row.classList.toggle('is-on', on);
+    if (cb) cb.checked = on;
+    state.options[key] = on;
+  });
+});
+
+// ═══════════════════════════════════════════════
 //  ÇALIŞTIR
 // ═══════════════════════════════════════════════
 dom.runBtn.addEventListener('click', async () => {
@@ -129,22 +153,40 @@ dom.runBtn.addEventListener('click', async () => {
   if (state.mode === 'operations' && !state.selectedOp) { setStatus('Bir işlem seçin.'); return; }
 
   setLoading(true);
+  setDot('active');
   try {
     let result;
     if (state.mode === 'analyze') {
       result = await analyzeFiles(state.files);
+      state.activeTab = 'overview';
       renderAnalysisResult(result);
+      // Schema butonu
+      dom.schemaBtn.disabled = !result.jsonSchema || !state.options.jsonSchema;
     } else {
       result = await runOperation(state.selectedOp, state.files);
       renderOperationResult(result);
+      dom.schemaBtn.disabled = true;
     }
     state.lastResult = result;
     setStatus('Tamamlandı.');
+    setDot('ok');
     dom.copyBtn.disabled = dom.exportBtn.disabled = false;
+
+    // Inline schema buton
+    setupInlineSchemaBtn(result);
   } catch (err) {
     setStatus(`Hata: ${err.message}`);
+    setDot('error');
   } finally { setLoading(false); }
 });
+
+function setupInlineSchemaBtn(result) {
+  // Sonradan DOM'a eklenen schema butonu için
+  setTimeout(() => {
+    const btn = document.getElementById('schemaInlineBtn');
+    if (btn) btn.addEventListener('click', () => downloadSchema(result.jsonSchema));
+  }, 100);
+}
 
 // ═══════════════════════════════════════════════
 //  KOPYALA / İNDİR
@@ -161,14 +203,25 @@ dom.copyBtn.addEventListener('click', () => {
 dom.exportBtn.addEventListener('click', () => {
   if (!state.lastResult) return;
   const data = state.lastResult.data ?? state.lastResult;
+  downloadJSON(data, `json-tool-${Date.now()}.json`);
+});
+
+dom.schemaBtn.addEventListener('click', () => {
+  if (!state.lastResult?.jsonSchema) return;
+  downloadSchema(state.lastResult.jsonSchema);
+});
+
+function downloadJSON(data, filename) {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const url  = URL.createObjectURL(blob);
-  const a    = Object.assign(document.createElement('a'), {
-    href: url, download: `json-tool-output-${Date.now()}.json`,
-  });
+  const a    = Object.assign(document.createElement('a'), { href: url, download: filename });
   a.click();
   URL.revokeObjectURL(url);
-});
+}
+
+function downloadSchema(schema) {
+  downloadJSON(schema, `schema-${Date.now()}.json`);
+}
 
 // ═══════════════════════════════════════════════
 //  TEMA
@@ -185,15 +238,22 @@ themeSwitch.addEventListener('click', () => {
 // ═══════════════════════════════════════════════
 //  YARDIMCILAR
 // ═══════════════════════════════════════════════
-function setStatus(msg)      { dom.statusState.textContent = msg; }
-function setLoading(active)  {
+function setStatus(msg) { dom.statusState.textContent = msg; }
+
+function setDot(kind) {
+  dom.statusDot.className = 'statusbar__dot';
+  if (kind) dom.statusDot.classList.add(`statusbar__dot--${kind}`);
+}
+
+function setLoading(active) {
   dom.runBtn.disabled = active;
   document.body.classList.toggle('is-loading', active);
-  dom.runBtn.querySelector('.run-btn__text').textContent = active ? 'Çalışıyor...' : 'Çalıştır';
+  dom.runBtn.querySelector('.run-btn__text').textContent = active ? 'Çalışıyor…' : 'Çalıştır';
 }
+
 function updateStatusBar() {
-  dom.statusMode.textContent  = `Mod: ${state.mode === 'analyze' ? 'Analiz' : 'İşlemler'}`;
+  dom.statusMode.textContent  = state.mode === 'analyze' ? 'Analiz' : 'İşlemler';
   dom.statusFiles.textContent = state.files.length
-    ? `Dosya: ${state.files.map(f => f.name).join(', ')}`
-    : 'Dosya: —';
+    ? `${state.files.map(f => f.name).join(', ')}`
+    : '—';
 }
